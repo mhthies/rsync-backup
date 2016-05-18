@@ -74,7 +74,7 @@ main() {
     # Check for latest complete backup and build rsync parameters (--link-dest and --exclude-from)
     LINK_ARG=
     if [[ -L "$DEST/$LATEST_LINK" && -d "$DEST/$LATEST_LINK" ]]; then
-        echo $COLOR_INFO"Found complete backup. Using it as source for hard links."$COLOR_RESET
+        echo $COLOR_INFO"Found complete backup in "`readlink "$DEST/$LATESTLINK"`". Using it as source for hard links."$COLOR_RESET
         LINK_ARG="--link-dest=../$LATEST_LINK"
     else
         echo $COLOR_INFO"Could not find existing complete backup. So, we will run a full backup."$COLOR_RESET
