@@ -70,7 +70,7 @@ main() {
     # Check for latest complete backup and build rsync parameters (--link-dest and --exclude-from)
     LINK_ARG=
     if [[ -L "$DEST/$LATEST_LINK" && -d "$DEST/$LATEST_LINK" ]]; then
-        echo $COLOR_INFO"Found complete backup in "`readlink "$DEST/$LATESTLINK"`". Using it as source for hard links."$COLOR_RESET
+        echo $COLOR_INFO"Found complete backup in "`readlink "$DEST/$LATEST_LINK"`". Using it as source for hard links."$COLOR_RESET
         LINK_ARG="../$LATEST_LINK"
     else
         echo $COLOR_INFO"Could not find existing complete backup. So, we will run a full backup."$COLOR_RESET
@@ -128,7 +128,7 @@ main() {
     
     # Run backup
     echo $COLOR_INFO"Starting rsync for backup ..."$COLOR_RESET
-    rsync -a ${LINK_ARG:+--link-dest="$LINK_ARG"} ${FILTER:+--exclude-from="$FILTER"} "$SOURCE/" "$DEST/$BACKUP_DIR"
+    rsync -a ${LINK_ARG:+--link-dest="$LINK_ARG"} ${FILTER:+--exclude-from="$FILTER"} --info=progress2 "$SOURCE/" "$DEST/$BACKUP_DIR"
     result=$?
     # Exit on rsync error
     if [ $result != 0 ]; then
