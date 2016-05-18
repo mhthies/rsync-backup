@@ -75,13 +75,9 @@ main() {
     LINK_ARG=
     if [[ -L "$DEST/$LATEST_LINK" && -d "$DEST/$LATEST_LINK" ]]; then
         echo $COLOR_INFO"Found complete backup in "`readlink "$DEST/$LATESTLINK"`". Using it as source for hard links."$COLOR_RESET
-        LINK_ARG="--link-dest=../$LATEST_LINK"
+        LINK_ARG="../$LATEST_LINK"
     else
         echo $COLOR_INFO"Could not find existing complete backup. So, we will run a full backup."$COLOR_RESET
-    fi
-    FILTER_ARG=
-    if [ ! -z "$FILTER" ]; then
-        FILTER_ARG="--exclude-from=$FILTER"
     fi
     
     # Get backup target directory
@@ -105,7 +101,7 @@ main() {
             fi
             # Now, perform the dryrun
             echo $COLOR_INFO"Starting rsync for dryrun ..."$COLOR_RESET
-            rsync -a "$LINK_ARG" -n "$FILTER_ARG" "$SOURCE/" "$DRYRUN_DEST" --info=NAME,REMOVE,STATS2 --out-format="%o %f (%lB)" > "$DEST/$DRYRUN_LIST"
+            rsync -a ${LINK_ARG:+--link-dest="$LINK_ARG"} -n ${FILTER:+--exclude-from="$FILTER"} "$SOURCE/" "$DRYRUN_DEST" --info=NAME,REMOVE,STATS2 --out-format="%o %f (%lB)" > "$DEST/$DRYRUN_LIST"
             result=$?
             # Exit on rsync error while dryrun
             if [ $result != 0 ]; then
@@ -136,7 +132,7 @@ main() {
     
     # Run backup
     echo $COLOR_INFO"Starting rsync for backup ..."$COLOR_RESET
-    rsync -a "$LINK_ARG" --info=progress2 "$FILTER_ARG" "$SOURCE/" "$DEST/$BACKUP_DIR"
+    rsync -a ${LINK_ARG:+--link-dest="$LINK_ARG"} ${FILTER:+--exclude-from="$FILTER"} "$SOURCE/" "$DEST/$BACKUP_DIR"
     result=$?
     # Exit on rsync error
     if [ $result != 0 ]; then
