@@ -65,10 +65,6 @@ main() {
             CONTINUE_DIR=`readlink "$DEST/$UNFINISHED_LINK"`
         fi
     fi
-    # Remove unfinished-link, if existing
-    if [[ -L "$DEST/$UNFINISHED_LINK" ]]; then
-        rm "$DEST/$UNFINISHED_LINK"
-    fi
     
     
     # Check for latest complete backup and build rsync parameters (--link-dest and --exclude-from)
