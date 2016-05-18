@@ -49,7 +49,7 @@ main() {
         echo $COLOR_ERR"Error: Destination not set or no existing directory. Exiting"$COLOR_RESET
         exit 1
     fi
-    if [ ! -z "$FILTER" ] && [ ! -d "$FILTER" ]; then
+    if [ ! -z "$FILTER" ] && [ ! -f "$FILTER" ]; then
         echo $COLOR_ERR"Error: Filter file does not exist. Exiting"$COLOR_RESET
         exit 1
     fi
@@ -104,7 +104,8 @@ main() {
                 DRYRUN_DEST="$DEST/$EMPTY_DIR"
             fi
             # Now, perform the dryrun
-            rsync -a $LINK_ARG -n $FILTER_ARG "$SOURCE/" "$DRYRUN_DEST" --info=NAME,REMOVE --out-format="%o %f (%lB)" > "$DEST/$DRYRUN_LIST"
+            echo $COLOR_INFO"Starting rsync for dryrun ..."$COLOR_RESET
+            rsync -a "$LINK_ARG" -n "$FILTER_ARG" "$SOURCE/" "$DRYRUN_DEST" --info=NAME,REMOVE --out-format="%o %f (%lB)" > "$DEST/$DRYRUN_LIST"
             result=$?
             # Exit on rsync error while dryrun
             if [ $result != 0 ]; then
@@ -134,8 +135,8 @@ main() {
     ln -sfT "$BACKUP_DIR" "$DEST/$UNFINISHED_LINK"
     
     # Run backup
-    echo $COLOR_INFO"Starting rsync ..."$COLOR_RESET
-    rsync -a $LINK_ARG --info=progress2 $FILTER_ARG "$SOURCE/" "$DEST/$BACKUP_DIR"
+    echo $COLOR_INFO"Starting rsync for backup ..."$COLOR_RESET
+    rsync -a "$LINK_ARG" --info=progress2 "$FILTER_ARG" "$SOURCE/" "$DEST/$BACKUP_DIR"
     result=$?
     # Exit on rsync error
     if [ $result != 0 ]; then
