@@ -105,7 +105,7 @@ main() {
             fi
             # Now, perform the dryrun
             echo $COLOR_INFO"Starting rsync for dryrun ..."$COLOR_RESET
-            rsync -a "$LINK_ARG" -n "$FILTER_ARG" "$SOURCE/" "$DRYRUN_DEST" --info=NAME,REMOVE --out-format="%o %f (%lB)" > "$DEST/$DRYRUN_LIST"
+            rsync -a "$LINK_ARG" -n "$FILTER_ARG" "$SOURCE/" "$DRYRUN_DEST" --info=NAME,REMOVE,STATS2 --out-format="%o %f (%lB)" > "$DEST/$DRYRUN_LIST"
             result=$?
             # Exit on rsync error while dryrun
             if [ $result != 0 ]; then
