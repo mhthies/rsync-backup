@@ -44,3 +44,5 @@ Options:
   -h
         Show this help message and exit without doing anything.
 ```
+
+You may want to edit the constant definitions in the first lines of the script. Especially set RSYNC_OPTIONS to an empty string, if you want to run a real archive backup including copy of permission changes. The default value will advise rsync to ignore user, group and permission changes to work properly with usb drive mount options of most linux distributions.

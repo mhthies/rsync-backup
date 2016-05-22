@@ -17,6 +17,7 @@ EMPTY_DIR="empty" # Used for dryruns
 DRYRUN_LIST="transferlist.txt"
 
 #How long to keep daily and weekly backups (in days)
+RSYNC_OPTIONS="--no-perms --no-owner --no-group"
 KEEP_DAILY=14
 KEEP_WEEKLY=60
 
@@ -97,7 +98,7 @@ main() {
             fi
             # Now, perform the dryrun
             echo $COLOR_INFO"Starting rsync for dryrun ..."$COLOR_RESET
-            rsync -a ${LINK_ARG:+--link-dest="$LINK_ARG"} -n ${FILTER:+--exclude-from="$FILTER"} "$SOURCE/" "$DRYRUN_DEST" --info=NAME,REMOVE,STATS2 --out-format="%o %f (%lB)" > "$DEST/$DRYRUN_LIST"
+            rsync -a $RSYNC_OPTIONS ${LINK_ARG:+--link-dest="$LINK_ARG"} -n ${FILTER:+--exclude-from="$FILTER"} "$SOURCE/" "$DRYRUN_DEST" --info=NAME,REMOVE,STATS2 --out-format="%o %f (%lB)" > "$DEST/$DRYRUN_LIST"
             result=$?
             # Exit on rsync error while dryrun
             if [ $result != 0 ]; then
@@ -128,7 +129,7 @@ main() {
     
     # Run backup
     echo $COLOR_INFO"Starting rsync for backup ..."$COLOR_RESET
-    rsync -a ${LINK_ARG:+--link-dest="$LINK_ARG"} ${FILTER:+--exclude-from="$FILTER"} --info=progress2 "$SOURCE/" "$DEST/$BACKUP_DIR"
+    rsync -a $RSYNC_OPTIONS ${LINK_ARG:+--link-dest="$LINK_ARG"} ${FILTER:+--exclude-from="$FILTER"} --info=progress2 "$SOURCE/" "$DEST/$BACKUP_DIR"
     result=$?
     # Exit on rsync error
     if [ $result != 0 ]; then
