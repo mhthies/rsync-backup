@@ -45,4 +45,10 @@ Options:
         Show this help message and exit without doing anything.
 ```
 
-You may want to edit the constant definitions in the first lines of the script. Especially set RSYNC_OPTIONS to an empty string, if you want to run a real archive backup including copy of permission changes. The default value will advise rsync to ignore user, group and permission changes to work properly with usb drive mount options of most linux distributions.
+## Tips
+
+You may want to edit the constant definitions in the first lines of the script.
+
+If you use this script for backups to a file system without user/group/permissions support (e.g. NTFS without user
+mapping), rsync will allways copy every file, due to the permissions mismatch. In that case add the following options
+to RSYNC_OPTIONS: `--no-perms --no-owner --no-group`.

@@ -17,7 +17,7 @@ EMPTY_DIR="empty" # Used for dryruns
 DRYRUN_LIST="transferlist.txt"
 
 #How long to keep daily and weekly backups (in days)
-RSYNC_OPTIONS="--no-perms --no-owner --no-group"
+RSYNC_OPTIONS="--fuzzy -H"
 KEEP_DAILY=14
 KEEP_WEEKLY=60
 
