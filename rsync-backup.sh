@@ -255,7 +255,7 @@ deleteOldDaily() {
         local f_age_days=$(( ($current_timestamp - $f_timestamp) / (24*3600) ))
         if [ "$f_age_days" -ge "$KEEP_DAILY" ]; then
             echo $COLOR_INFO"Deleting $f. It is $f_age_days days old."$COLOR_RESET
-            rm -r "$f"
+            rm -rf "$f"
         fi
     done
 }
@@ -271,7 +271,7 @@ deleteOldWeekly() {
         local f_age_days=$(( ($current_timestamp - $f_timestamp) / (24*3600) ))
         if [ "$f_age_days" -ge "$KEEP_WEEKLY" ]; then
             echo $COLOR_INFO"Deleting $f. It is $f_age_days days old."$COLOR_RESET
-            rm -r "$f"
+            rm -rf "$f"
         fi
     done
 }
